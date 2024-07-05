@@ -3,17 +3,16 @@
  */
 package org.example;
 
+import org.example.aplicacion.logica.productos.Medicamento;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.*;
-
-import java.util.ArrayList;
 
 public class AppTest {
     @Test
     public void MedicamentoFuncionaTest(){
         String nombreCientifico = "Aspirina 1-2-3";   
-        Medicamento xd = new Medicamento(nombreCientifico);
+        Medicamento pruebaMedicamento = new Medicamento(nombreCientifico);
         
-        
+        Assert.assertEquals(pruebaMedicamento.getNombreCientifico(), nombreCientifico);
     }
 }
