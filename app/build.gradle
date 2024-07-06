@@ -18,12 +18,29 @@ repositories {
 dependencies {
     // Use JUnit test framework.
     implementation 'org.junit.jupiter:junit-jupiter:5.11.0-M2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(22)
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed" //, "standardOut", "standardError"
+
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces false
+
+        // Change to `true` for more verbose test output
+        showStandardStreams = false
     }
 }
 

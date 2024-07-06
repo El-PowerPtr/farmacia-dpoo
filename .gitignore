@@ -6,4 +6,4 @@
 .workspace
 # Ignore Gradle build output directory
 build
-
+test
