@@ -1,7 +1,6 @@
 package org.example.aplicacion.logica.productos;
 
-import java.time.LocalDate;
-
+@SuppressWarnings("unused")
 public abstract class MedicamentoEnVenta extends Producto {
 
     private Medicamento medicamento;
@@ -9,8 +8,8 @@ public abstract class MedicamentoEnVenta extends Producto {
 
     public MedicamentoEnVenta(double precio, String nombreComun, Medicamento medicamento, Presentacion presentacion) {
         super(precio, nombreComun);
-        this.medicamento = medicamento;
-        this.presentacion = presentacion;
+        this.setMedicamento(medicamento);
+        this.setPresentacion(presentacion);
     }
 
     public void setPresentacion(Presentacion presentacion) {

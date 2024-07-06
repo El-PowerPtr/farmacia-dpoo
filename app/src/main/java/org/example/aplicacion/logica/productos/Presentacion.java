@@ -1,5 +1,7 @@
 package org.example.aplicacion.logica.productos;
 
+
+@SuppressWarnings("unused")
 public class Presentacion{
     private Formato formato;
     private int fortalezaMg;    
@@ -8,6 +10,11 @@ public class Presentacion{
         this.setFortalezaMg(fortalezaMg);
         this.formato = formato;
     }
+    
+    public int getFortalezaMg() {
+        return fortalezaMg;
+    }
+
 
     public void setFortalezaMg(int fortalezaMg){
         Validador.validarNoNulo(fortalezaMg);
@@ -15,6 +22,16 @@ public class Presentacion{
 
         this.fortalezaMg = fortalezaMg;
     }
+
+    public Formato getFormato() {
+        return formato;
+    }
+
+    public void setFormato(Formato formato) {
+        Validador.validarNoNulo(formato);
+        this.formato = formato;
+    }
+
 
     public enum Formato {
         PILDORA,
@@ -28,4 +45,6 @@ public class Presentacion{
         ACEITE,
         MEDIDCINA_VERDE
     }
+
+    
 }
