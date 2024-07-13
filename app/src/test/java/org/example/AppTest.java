@@ -3,32 +3,55 @@
  */
 package org.example;
 
-import org.example.aplicacion.logica.productos.Medicamento;
-import org.example.aplicacion.logica.productos.Presentacion;
-import org.example.aplicacion.logica.productos.Presentacion.Formato;
+import org.example.aplicacion.logica.products.Medicine;
+import org.example.aplicacion.logica.products.Presentation;
+import org.example.aplicacion.logica.products.Validate;
+import org.example.aplicacion.logica.products.Presentation.Format;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
     @Test
-    void MedicamentoFuncionaTest(){
-        String nombreCientifico = "Aspirina 1-2-3";   
-        Medicamento pruebaMedicamento = new Medicamento(nombreCientifico);
+    void medicineTest(){
+        String scientificName = "Aspirina 1-2-3";   
+        int id = 072065432;
+        Medicine testMedicine = new Medicine(scientificName, id);
         
-        assertEquals(pruebaMedicamento.getNombreCientifico(), nombreCientifico);
-        
-        System.out.println("El constructor de medicamentos funciona perfectamente");
+        assertEquals(scientificName, testMedicine.getScientificName());
+        assertEquals(id, testMedicine.getId());
     }
 
     @Test
-    void presentacionFuncionaTest(){
-        int fortaleza = 5;
-        Presentacion presentacion = new Presentacion(Formato.PILDORA, fortaleza);
+    void presentationTest(){
+        String scientificName = "1 Carajo this is elon muskñ"; 
+        long id = 0001422;  
+        var medicine = new Medicine(scientificName, id);
+        double price = 4.80;
+        String commonName = "Aspirina";
+        int strengthMg = 5;
+        
+        var presentation = new Presentation(price, commonName, id, medicine, Format.PILL, strengthMg);
 
-        assertEquals(fortaleza, presentacion.getFortalezaMg());
-        assertEquals(Formato.PILDORA, presentacion.getFormato());
-
-        System.out.println("El constructor de medicamentos funciona perfectamente");
+        assertEquals(id, presentation.getId());
+        assertEquals(strengthMg, presentation.getStrengthMg());
+        assertEquals(commonName, presentation.getCommonName());
+        assertEquals(medicine, presentation.getMedicine());
+        assertEquals(Format.PILL, presentation.getFormat());
+        assertEquals(price, presentation.getPrice(),0.01); 
     }
+
+    @Test
+    void validacionesnTest(){
+        var exception = IllegalArgumentException.class;
+        assertThrows(exception, ()-> Validate.isNotEmpty(null));
+        assertThrows(exception, ()-> Validate.isNotEmpty("          "));
+        assertThrows(exception, ()-> Validate.isHumanName("pene  e"));
+        assertThrows(exception, ()-> Validate.isHumanName("-amapola 23"));
+        assertThrows(exception, ()-> Validate.isGreaterThanZero(0));
+        assertThrows(exception, ()-> Validate.isPositiveNumber(-7));
+    }
+
 }

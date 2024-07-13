@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.example.AppTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-07-12T23:31:20" hostname="DESKTOP-KFUGH52" time="0.745">
+  <properties/>
+  <testcase name="validacionesnTest()" classname="org.example.AppTest" time="0.512"/>
+  <testcase name="medicineTest()" classname="org.example.AppTest" time="0.06"/>
+  <testcase name="presentationTest()" classname="org.example.AppTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

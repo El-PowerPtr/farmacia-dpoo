@@ -1,8 +1,0 @@
-{
-    "java.project.sourcePaths": [
-        "app/src/main/java/org/example",
-        "app/src/main/java/org"
-    ],
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
-}
