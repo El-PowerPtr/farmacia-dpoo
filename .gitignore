@@ -5,6 +5,6 @@
 .vscode/**
 *.workspace
 # Ignore Gradle build output directory
-!main/**
-build/**
-test/**
+!**/main/**
+**/build/**
+**/test/**

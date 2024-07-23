@@ -1,4 +1,4 @@
-// package org.example.aplicacion.logica.products;
+// package aplicacion.logica.products;
 
 // import java.time.LocalDate;
 
