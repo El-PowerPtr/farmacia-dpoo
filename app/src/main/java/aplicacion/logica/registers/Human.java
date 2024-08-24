@@ -1,8 +1,10 @@
 package aplicacion.logica.registers;
 
+import java.io.Serializable;
+
 import aplicacion.logica.Validate;
 
-public class Human {
+public class Human implements Serializable  {
     protected String name;
     protected Sex sex;
     protected long id;
@@ -51,6 +53,10 @@ public class Human {
 
     public String getAddress() {
         return address;
+    }
+
+    public boolean equals(Human other){
+        return other instanceof Human && id == other.getId();
     }
 
 }

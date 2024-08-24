@@ -70,4 +70,9 @@ public class Recipe extends BuyPerm {
         this.date = date;
     }
 
+
+    @Override
+    public String getType(){
+        return "RECETA";
+    }
 }

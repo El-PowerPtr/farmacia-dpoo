@@ -1,10 +1,14 @@
 # Ignore Gradle project-specific cache directory
-.gradle/** 
-.metadata/**
-.settings/**
-.vscode/**
-*.workspace
+.gradle 
+.metadata
+.settings
+.vscode
+*.code-workspace
+gradlew
+gradlew.bat
+gradle
 # Ignore Gradle build output directory
-!**/main/**
-**/build/**
-**/test/**
+app/**
+!app/src
+
+

@@ -1,8 +1,9 @@
 package aplicacion.logica.buy_perms;
 import java.util.HashMap;
+import java.io.Serializable;
 import aplicacion.logica.Validate;
 
-public abstract class BuyPerm {
+public abstract class BuyPerm implements Serializable {
     private long id;
     private HashMap<Long, Integer> products;
 
@@ -38,6 +39,6 @@ public abstract class BuyPerm {
         return id;
     }
 
-        
+    public abstract String getType();
 
 }

@@ -1,9 +1,10 @@
 package aplicacion.logica.products;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BatchRepository {
+public class BatchRepository implements Serializable{
     private HashMap<Product, ArrayList<Batch>> batches;
 
     public BatchRepository(){

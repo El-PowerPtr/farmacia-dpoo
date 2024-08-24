@@ -1,8 +1,10 @@
 package aplicacion.logica.products;
 
+import java.io.Serializable;
+
 import aplicacion.logica.Validate;
 
-public class Batch implements Cloneable{
+public class Batch implements Cloneable, Serializable{
     private int quantity;
     private Product product;
     private long id;

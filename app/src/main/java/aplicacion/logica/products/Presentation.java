@@ -10,8 +10,8 @@ public class Presentation extends Product {
     private Format format;
     private int strengthMg;
 
-    public Presentation(double price, String commonName,long id,boolean controlled, Medicine medicine, Format format, int strengthMg) {
-        super(price, commonName, id, controlled);
+    public Presentation(double price, String commonName,long id,ControlType control, Medicine medicine, Format format, int strengthMg) {
+        super(price, commonName, id, control);
         setMedicine(medicine);
         setFormat(format);
         setStrengthMg(strengthMg);

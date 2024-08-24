@@ -2,17 +2,19 @@ package aplicacion.logica.products;
 
 import aplicacion.logica.Validate;
 
-public abstract class Product {
+import java.io.Serializable;
+
+public abstract class Product implements Serializable{
     private double price;
     private String commonName;
     private long id;
-    private boolean controlled;
+    private ControlType control;
     
-    public Product(double price, String commonName, long id, boolean controlled){
+    public Product(double price, String commonName, long id, ControlType control){
         setPrice(price);
         setCommonName(commonName);
         setId(id);
-        setControl(controlled);
+        setControl(control);
     }
 
     public double getPrice(){
@@ -46,13 +48,13 @@ public abstract class Product {
         this.id = id;
     }     
 
-    public void setControl(boolean controlled){
-        Validate.isNotEmpty(controlled);
-        this.controlled = controlled;
+    public void setControl(ControlType control){
+        Validate.isNotEmpty(control);
+        this.control = control;
     }
 
-    public boolean getControl(){
-        return controlled;
+    public ControlType getControl(){
+        return control;
     }
 
     @Override

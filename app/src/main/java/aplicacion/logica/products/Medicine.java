@@ -1,8 +1,9 @@
 package aplicacion.logica.products;
 
 import aplicacion.logica.Validate;
+import java.io.Serializable;
 
-public class Medicine {
+public class Medicine implements Serializable{
     private String scientificName;
     private long id;
 

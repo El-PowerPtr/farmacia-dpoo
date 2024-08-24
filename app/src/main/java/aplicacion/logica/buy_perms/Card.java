@@ -29,7 +29,11 @@ public class Card extends BuyPerm {
         Validate.isHumanName(doctorName);
         this.doctorName = doctorName;
     }
-    
 
+
+    @Override
+    public String getType(){
+        return "TARJETON";
+    }
     
 }
