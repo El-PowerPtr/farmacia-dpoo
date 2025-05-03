@@ -4,9 +4,7 @@
 .settings
 .vscode
 *.code-workspace
-gradlew
-gradlew.bat
-gradle
+.idea
 # Ignore Gradle build output directory
-app
 !app/src/** 
+bin
