@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.example.RegistersSerializationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-08-18T07:59:11" hostname="DESKTOP-KFUGH52" time="0.169">
-  <properties/>
-  <testcase name="productsSerialized()" classname="org.example.RegistersSerializationTest" time="0.169"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -1,8 +1,10 @@
 package aplicacion;
 
+import aplicacion.interfaz.Window;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Vaina en Construcción xd");
+       Window window = new Window();
     }
 
 }

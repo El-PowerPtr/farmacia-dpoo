@@ -6,7 +6,6 @@ import aplicacion.logica.products.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
@@ -30,7 +29,6 @@ public class AppTest {
         int strengthMg = 5;
         ControlType control = ControlType.FREE;
         var presentation = new Presentation(price, commonName, id, control, medicine, Format.PILL, strengthMg);
-
         assertEquals(id, presentation.getId());
         assertEquals(strengthMg, presentation.getStrengthMg());
         assertEquals(commonName, presentation.getCommonName());

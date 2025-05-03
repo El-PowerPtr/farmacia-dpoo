@@ -14,6 +14,7 @@ public class Purchase implements Comparable<Purchase> , Serializable{
     public final String buyPermType;
     public final long personId;
     public final HashMap<Long, BatchSell> boughtProducts;
+    private boolean valid;
 
     public Purchase(LocalDateTime time, BuyPerm buyPerm, HashMap<Long, BatchSell> bougthProducts, long personId) {
         this.time = setTime(time);
@@ -21,6 +22,7 @@ public class Purchase implements Comparable<Purchase> , Serializable{
         this.buyPermType = setBuyPermType(buyPerm);
         this.boughtProducts = setBoughtProducts(bougthProducts);
         this.personId = setPersonId(personId);
+        this.valid = true;
     }
 
     private LocalDateTime setTime(LocalDateTime time) {
@@ -48,12 +50,6 @@ public class Purchase implements Comparable<Purchase> , Serializable{
         return buyPerm.getType();
     }
 
-    /**
-     * Acts as a Setter of the buyPermId attribute, wich is a constant
-     * 
-     * @param buyPerm the Buy Perm used for the Purchase
-     * @return the ID of the given Buy Perm
-     */
     private long setBuyPermId(BuyPerm buyPerm) {
         return buyPerm.getId();
     }
@@ -97,4 +93,11 @@ public class Purchase implements Comparable<Purchase> , Serializable{
         }
     }
 
+    public boolean getValid(){
+        return valid;
+    }
+
+    public void revertValid(){
+        valid = !valid;
+    }
 }

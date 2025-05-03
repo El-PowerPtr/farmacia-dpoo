@@ -10,5 +10,3 @@ gradle
 # Ignore Gradle build output directory
 app
 !app/src/** 
-
-

@@ -23,7 +23,7 @@ public abstract class Product implements Serializable{
 
     public void setPrice(double price){
         Validate.isNotEmpty(price);
-        Validate.isPositiveNumber(price);        
+        Validate.isPositiveNumber(price); 
         this.price = price;
     }
 
