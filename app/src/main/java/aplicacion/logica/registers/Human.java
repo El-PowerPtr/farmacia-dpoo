@@ -1,7 +1,7 @@
 package aplicacion.logica.registers;
 
 import java.io.Serializable;
-
+import java.time.LocalDate;
 import aplicacion.logica.Validate;
 
 public class Human implements Serializable  {
@@ -9,8 +9,10 @@ public class Human implements Serializable  {
     protected Sex sex;
     protected long id;
     protected String address; 
+    protected LocalDate birthDate;
 
-    public Human(String name, long id, String address, Sex sex){
+    public Human(String name, long id, String address, Sex sex, LocalDate birthDate){
+        setBirthDate(birthDate);
         setName(name);
         setSex(sex);
         setId(id);
@@ -18,7 +20,9 @@ public class Human implements Serializable  {
     }
 
     protected void setName(String name){
-        Validate.isNotEmpty(name);
+        if (name == null){
+
+        }
         Validate.isHumanName(name);
         this.name = name;
     }
@@ -37,6 +41,13 @@ public class Human implements Serializable  {
     protected void setSex(Sex sex){
         Validate.isNotEmpty(sex);
         this.sex = sex;
+    }
+
+    protected void setBirthDate(LocalDate birthDate){
+        if(birthDate == null){
+            throw new IllegalArgumentException("La fecha es nula por alguna razón");
+        }
+        this.birthDate = birthDate;
     }
 
     public String getName() {

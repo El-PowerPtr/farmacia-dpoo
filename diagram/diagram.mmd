@@ -1,0 +1,135 @@
+classDiagram
+    class Persona{
+        - nombre: String
+        - id: long
+        - edad: int
+        - direccion: String
+        + getEdad() int
+        - setEdad()
+    }
+    
+    class RegistroVentas{
+        - productos: Map~Producto, Int~
+        - setProducto(Producto, int)
+        + incorporarProducto(Producto) boolean
+        + incorporarProducto(Producto, int) boolean
+        + extraerProducto(Producto, int) Optional~Int~
+    }
+
+    class Tarjeton{
+        - productos: List~Producto~
+        - creationDate: LocalDate
+        - expireDate: LocalDate
+    }
+
+    class Presentacion  {
+        <<enum>>
+        Pomada
+        Capsulas
+        Tabletas
+        Jarabe
+        Hierbas
+        Polvo
+        Inhalaciones
+    }        
+    class PacienteControlado{
+        - patologia: String
+    }
+    
+    class Medicamento{
+        - presentacion: Presentacion
+        - nombreCientifico: String
+        - usos: ArrayList~String~
+        - contraindicaciones: ArrayList~String~
+        - temperaturaDeAlmacenamiento: int
+    }
+
+    class Venta{
+       -id: long
+       -fecha: LocalDate
+       -productos: Map~Producto, Int~
+       - paciente: long
+       - tarjetones: List~Tarjeton~
+    }
+
+    class Almacen {
+      - productos: Map <Producto, Int>
+      - intinmas: int
+      + incorporarProducto(Producto) boolean
+      + incorporarProducto(Producto, int) boolean
+      + extraerProducto(Producto, int) Optional~Int~
+      - setProducto(Producto, int)
+      + meterIntimas(int) boolean 
+      + sacarIntimas(int) boolean
+    }
+
+    class ControlDeVentas {
+        <<interface>>
+        + venta(long)
+        + comprarProducto(Venta venta, Producto producto, int cantidad) float
+        + comprarIntimas(Venta, Libreta) float
+        + comprarConReceta(Venta, Receta) float
+        + comprarConTarjeton(Venta, Tarjeton) float
+        + comprarConTarjeton(Venta, Tarjeton, List~Producto~) float
+        + tarjetonValido(boolean)
+    }
+
+    class Libreta {
+        - id: long
+        - direccion: String
+        - jefeDeNucleo: Persona
+        - mujeres: List~Persona~
+    }
+
+    class RegistroLibretas {
+        + buscarLibreta(long id) Libreta
+        + agregarLibreta(Libreta libreta) boolean
+        + eliminarLibreta(long id) Libreta
+        + registrarEnLibretareta(Persona persona,Libreta libreta) Optional~Libreta~
+    }
+
+    class Producto {
+        <<abstract>>
+        - id: long
+        - nombre: String
+        - precioUnitario: float
+        - estaControlado: boolean
+    }
+    
+    class Receta{
+        - idMedico: long
+        - nombreMedico: String
+        - fechaVencimiento: LocalDate
+    }
+
+    class RegistroRecetas{
+        + agregarReceta(Receta receta) boolean
+        + eliminarReceta()
+    }
+
+    class ValidadorVentas {
+        <<interface>>
+        + validarReceta(Receta receta) boolean
+        + validarLibretas(Libreta libreta) boolean
+        + validarTarjeton(Tarjeton tarjeton) boolean
+    }
+
+    class Farmacia {
+
+    } 
+
+    Farmacia ..|> ControlDeVentas
+    Farmacia ..|> ValidadorVentas
+    Libreta "1" o-- "1" Persona
+    PacienteControlado --|> Persona
+    Tarjeton "1..*" --* "1" PacienteControlado
+    Producto "*" --* "1" Almacen 
+    Medicamento --|> Producto
+    Venta "*" --o "1" Medicamento
+    ControlDeVentas "1" --* "*" Venta
+    RegistroLibretas "1" o-- "*" Libreta
+    RegistroRecetas "1" --o "*" Receta
+    Farmacia "1"..* "1" RegistroLibretas
+    Farmacia "1" ..* "1" RegistroVentas
+    Farmacia "1" ..* "1" RegistroRecetas
+
