@@ -6,13 +6,13 @@ public class Product {
     private double price;
     private String commonName;
     private long id;
-    private ControlType control;
+    private ControlType[] controlTypes;
 
-    public Product(double price, String commonName, long id, ControlType control) {
+    public Product(double price, String commonName, long id, ControlType[] controlTypes) {
         setPrice(price);
         setCommonName(commonName);
         setId(id);
-        setControl(control);
+        setControlTypes(controlTypes);
     }
 
     public double getPrice() {
@@ -31,7 +31,7 @@ public class Product {
     }
 
     public void setCommonName(String commonName) {
-        if (commonName == null){
+        if (commonName == null) {
             throw new IllegalArgumentException("El nombre no puede ser nulo");
         }
         Validate.isThingName(commonName);
@@ -44,18 +44,28 @@ public class Product {
     }
 
     public void setId(long id) {
-        Validate.isNotEmpty(id);
-        Validate.isGreaterThanZero(id);
         this.id = id;
     }
 
-    public void setControl(ControlType control) {
-        Validate.isNotEmpty(control);
-        this.control = control;
+    public void setControlTypes(ControlType[] controlTypes) {
+        if (controlTypes == null) {
+            throw new IllegalArgumentException(
+                    "El tipo de control no puede ser nulo.(Odio java la puta madre cómo coño deja que las enums sean nulas)");
+        }
+        this.controlTypes = controlTypes;
     }
 
-    public ControlType getControl() {
-        return control;
+    public ControlType[] getControlTypes() {
+        return controlTypes;
+    }
+
+    public boolean controledBy(ControlType controlType) {
+        for (int i = 0; i < controlTypes.length; i++) {
+            if (controlTypes[i] == controlType) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -70,7 +80,7 @@ public class Product {
             Product otherProduct = (Product) other;
             return id == otherProduct.getId();
         } else {
-            throw new IllegalArgumentException("Un producto sólo puede ser igual a otro Prodcuto");
+            throw new IllegalArgumentException("Un producto sólo puede ser igual a otro Producto");
         }
     }
 
