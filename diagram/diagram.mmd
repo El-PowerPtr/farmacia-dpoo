@@ -3,21 +3,40 @@ classDiagram
         - nombre: String
         - id: long
         - edad: int
+        - sexo: Sexo
         - direccion: String
+        - fechaNacimiento: LocalDate
         + getEdad() int
         - setEdad()
     }
     
-    class RegistroVentas{
+    class CarritoCompras{
         - productos: Map~Producto, Int~
         - setProducto(Producto, int)
+        - permisos: Set~Permisos~
+        - importe: float
         + incorporarProducto(Producto) boolean
         + incorporarProducto(Producto, int) boolean
-        + extraerProducto(Producto, int) Optional~Int~
+        + meterPermiso(Permiso permiso) boolean
+        + sacarProducto(Producto, int) Optional~Int~
+    }
+
+    class Sexo {
+        <<enum>>
+        Masculino
+        Femenino
+        Intersexual
+    }
+
+    class Venta{
+       - id: long
+       - fecha: LocalDate
+       - cliente: Persona
+       - compra: CarritoCompras
     }
 
     class Tarjeton{
-        - productos: List~Producto~
+        - productos: Map~Producto, Int~
         - creationDate: LocalDate
         - expireDate: LocalDate
     }
@@ -33,103 +52,177 @@ classDiagram
         Inhalaciones
     }        
     class PacienteControlado{
-        - patologia: String
+        - patologias: Set~String~
+        - tarjetones: Set~Tarjeton~
+    }
+
+    class RegistroPacientesControlados {
+        + controlarPaciente(Persona paciente) PacienteControlado
+        + darTarjeton(Persona paciente, Map~Producto~ productos, LocalDate creacion, LocalDate vencimiento) boolean
+        + buscarPaciente(long id) Optional~PacienteControlado~
+    }
+
+    class RegistroPacientes {
+        + crearPaciente(long id, String nombre, String direccion, Sexo sexo, LocalDate fechaNacimiento) Persona
+        + buscarPaciente(long id) Persona
     }
     
     class Medicamento{
         - presentacion: Presentacion
         - nombreCientifico: String
-        - usos: ArrayList~String~
-        - contraindicaciones: ArrayList~String~
+        - fortalezaMg: int
         - temperaturaDeAlmacenamiento: int
     }
 
-    class Venta{
-       -id: long
-       -fecha: LocalDate
-       -productos: Map~Producto, Int~
-       - paciente: long
-       - tarjetones: List~Tarjeton~
+    class ConstructorMedicamentos{
+        - presentacion: Presentacion
+        - nombreCientifico: String
+        - fortalezaMg: int
+        - temperaturaDeAlmacenamiento: int
+        - id: long
+        - nombre: String
+        - precioUnitario: float
+        - control: Control
+
+        + resetear()
+        + construirId(Long id) boolean
+        + construirNombre(String nombre) boolean
+        + construirPrecio(float precio) boolean
+        + construirControl(Control control) boolean
+        + construirNombreCientifico(String nombreCientifico) boolean
+        + construirPresentacion(Presentacion presentacion) boolean
+        + construirFortalezaMg(int fortalezaMg) boolean
+        + construirTemperaturaAlmacenamiento(int temperaturaDeAlmacenamiento) boolean
+        + generar() Medicamento
     }
 
     class Almacen {
       - productos: Map <Producto, Int>
-      - intinmas: int
+      - lotes: Map<Long, Lote>
+      + incorporarLote(Lote) boolean
+      + incorporarLote(Lote, int) boolean
       + incorporarProducto(Producto) boolean
       + incorporarProducto(Producto, int) boolean
-      + extraerProducto(Producto, int) Optional~Int~
+      + sacarProducto(Producto, int) Optional~Int~
+      + sacarLote(Lote): Optional~Lote~
+      + crearProducto(long id, String nombre, float precio, Control control) Producto
+      + crearMedicamento() boolean
+      + crearLote(Long id, Producto producto, int cantidad) Lote
+      + crearLote(Long id, Producto producto, int cantidad, LocalDate fechaProduccion, LocalDate fechaVencimiento) Lote
       - setProducto(Producto, int)
-      + meterIntimas(int) boolean 
-      + sacarIntimas(int) boolean
+      - setLote(Lote, int)
     }
 
     class ControlDeVentas {
         <<interface>>
-        + venta(long)
+        + comenzarVenta() 
+        + consolidarVenta() 
+        + cancelarVenta() 
         + comprarProducto(Venta venta, Producto producto, int cantidad) float
         + comprarIntimas(Venta, Libreta) float
         + comprarConReceta(Venta, Receta) float
         + comprarConTarjeton(Venta, Tarjeton) float
-        + comprarConTarjeton(Venta, Tarjeton, List~Producto~) float
-        + tarjetonValido(boolean)
+        + comprarConTarjeton(Venta, Tarjeton, Set~Producto~) float
     }
 
     class Libreta {
         - id: long
         - direccion: String
         - jefeDeNucleo: Persona
-        - mujeres: List~Persona~
+        - personas: Set~Persona~
     }
 
     class RegistroLibretas {
         + buscarLibreta(long id) Libreta
-        + agregarLibreta(Libreta libreta) boolean
-        + eliminarLibreta(long id) Libreta
-        + registrarEnLibretareta(Persona persona,Libreta libreta) Optional~Libreta~
+        + crearLibreta(long id, String direccion, long idJefe, String nombreJefe, Sexo sexoJefe, String direccionJefe) Libreta
+        + registrarEnLibreta(Libreta libreta, long id, String nombre, Sexo sexo, String direccion, boolean esJefe) Optional~Libreta~
+        + cambiarJefeLibreta(Libreta libreta, long idJefe) Optional~Libreta~
+        + eliminarDeLibretareta(Persona persona,Libreta libreta) Optional~Libreta~
     }
 
     class Producto {
-        <<abstract>>
         - id: long
         - nombre: String
         - precioUnitario: float
-        - estaControlado: boolean
+        - control: Control
     }
     
     class Receta{
         - idMedico: long
         - nombreMedico: String
-        - fechaVencimiento: LocalDate
-    }
-
-    class RegistroRecetas{
-        + agregarReceta(Receta receta) boolean
-        + eliminarReceta()
+        - fechaCreacion: LocalDate
+        - prodcuctos: Map~Producto, Int~
     }
 
     class ValidadorVentas {
         <<interface>>
+        + validarCarrito(CarritoCompras): boolean
+        + libretaCompro(Libreta) boolean
+        + tarjetonCompro(Tarjeton, Set~Producto~) boolean
+        + recetaCompro(Receta) boolean
         + validarReceta(Receta receta) boolean
         + validarLibretas(Libreta libreta) boolean
         + validarTarjeton(Tarjeton tarjeton) boolean
+    }
+
+    class Control {
+        <<enum>>
+        Libre
+        Libreta
+        Receta
+        Tarjeton
     }
 
     class Farmacia {
 
     } 
 
+    class Registro~T, C extends Collection~T~~ {
+        <<interface>>
+        add(T element) boolean
+        update(T old, T actual) T
+        delete(T element) T
+        getIf(Predicate~T~ condition) C
+        getAll() C
+    }
+
+    class RegistroVentas {
+        + ventasEntre(LocalDate start, LocalDate end): List~Venta~
+    }
+
+    class Lote{
+        - id: long
+        - producto: Producto
+        - cantidad: int
+        - fechaProduccion: Optional~LocalDate~
+        - fechaVencimiento: Optional~LocalDate~
+    }
+
     Farmacia ..|> ControlDeVentas
     Farmacia ..|> ValidadorVentas
-    Libreta "1" o-- "1" Persona
-    PacienteControlado --|> Persona
-    Tarjeton "1..*" --* "1" PacienteControlado
-    Producto "*" --* "1" Almacen 
+    Farmacia "1" *-- "1" CarritoCompras 
+    Libreta "1" o-- "1..*" Persona
+    PacienteControlado "1" o-- "1" Persona
+    Tarjeton "1..*" -- "1" PacienteControlado
+    Tarjeton "1..*" -- "1..4" Producto
     Medicamento --|> Producto
-    Venta "*" --o "1" Medicamento
-    ControlDeVentas "1" --* "*" Venta
-    RegistroLibretas "1" o-- "*" Libreta
-    RegistroRecetas "1" --o "*" Receta
-    Farmacia "1"..* "1" RegistroLibretas
-    Farmacia "1" ..* "1" RegistroVentas
-    Farmacia "1" ..* "1" RegistroRecetas
+    Almacen "1" *-- "1" ConstructorMedicamentos
+    Almacen "1" *-- "*" Producto 
+    Almacen "1" *-- "*" Lote
+    Venta "1" o-- "1" CarritoCompras
+    ControlDeVentas "1" *-- "*" Venta
 
+    RegistroLibretas ..|> Registro
+    Almacen ..|> Registro
+    RegistroVentas ..|> Registro
+    RegistroPacientes ..|> Registro
+    RegistroPacientesControlados ..|> Registro
+
+    RegistroLibretas "1" *-- "*" Libreta
+    RegistroLibretas "1" *-- "1" ConstructorLibretas
+    RegistroPacientes "1" *-- "*" Persona
+    RegistroPacientesControlados "1" *-- "*" PacienteControlado
+    Farmacia "1" ..* "1" RegistroLibretas
+    Farmacia "1" ..* "1" RegistroVentas
+    Farmacia "1" ..* "1" RegistroPacientes
+    Farmacia "1" ..* "1" RegistroPacientesControlados
