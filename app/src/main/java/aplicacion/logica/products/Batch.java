@@ -1,36 +1,27 @@
 package aplicacion.logica.products;
 
-import java.io.Serializable;
-
 import aplicacion.logica.Validate;
+import java.time.LocalDate;
+import java.util.Optional;
 
-public class Batch implements Cloneable, Serializable{
+public class Batch {
     private int quantity;
-    private Product product;
     private long id;
+    private Optional<LocalDate> production;
+    private Optional<LocalDate> expiration;
 
-    public Batch(int quantity, Product product, long id){
+    public Batch(int quantity, long id) {
         setQuantity(quantity);
-        setProduct(product);
         setId(id);
+        setProduction(Optional.empty());
+        setExpiration(Optional.empty());
     }
 
-    public void setProduct(Product product) {
-        Validate.isNotEmpty(product);
-        this.product = product;
-    }
-
-    public Product getProduct(){
-        return product;
-    }
-
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
-    
-    public void setQuantity(int quantity){
-        Validate.isNotEmpty(quantity);
-        Validate.isPositiveNumber(quantity);
+
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -39,31 +30,42 @@ public class Batch implements Cloneable, Serializable{
     }
 
     public void setId(long id) {
-        Validate.isNotEmpty(id);
-        Validate.isGreaterThanZero(id);
         this.id = id;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Batch newBatch = (Batch)super.clone();
-        newBatch.setQuantity(quantity);
-        newBatch.setProduct(product);
-        newBatch.setId(id);
-
-        return newBatch;
+    public Optional<LocalDate> getProduction() {
+        return production;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Batch externalBatch = (Batch)obj;
+    public void setProduction(Optional<LocalDate> production) {
+        if (production.isPresent() && Validate.isFuture(production.get())) {
+            throw new IllegalArgumentException("La producción no puede ser del futuro");
+        } else if (expiration.isPresent() && expiration.get().compareTo(production.get()) < 0) {
+            throw new IllegalArgumentException("la fecha de vencimiento debe ser mayor que la de producción");
+        }
+        this.production = production;
+    }
 
-        return id == externalBatch.getId() && product == externalBatch.getProduct();
+    public Optional<LocalDate> getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Optional<LocalDate> expiration) {
+        if (!production.isPresent()) {
+            throw new IllegalArgumentException("No puede haber fecha de vencimiento, pero sí de producción");
+        } else if (expiration.isPresent() && expiration.get().compareTo(production.get()) < 0) {
+            throw new IllegalArgumentException("la fecha de vencimiento debe ser mayor que la de producción");
+        }
+
+        this.expiration = expiration;
+    }
+
+    public boolean isExpired() {
+        return !expiration.isPresent() && expiration.get().compareTo(LocalDate.now()) <= 0;
     }
 
     @Override
     public int hashCode() {
-        return (int)id;
+        return ((Long) id).hashCode();
     }
 }
-

@@ -1,35 +1,54 @@
 package aplicacion.logica.buy_perms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Set;
 
-import aplicacion.logica.registers.Human;
+import aplicacion.logica.registers.Person;
 
-public class DispatchBook extends BuyPerm{
-    private ArrayList<Human> members;
-    private Human familyHead;
+public class DispatchBook {
+    private long id;
+    private String direccion;
+    private Person leader;
+    private Set<Person> members;
 
-    public DispatchBook(long id, HashMap<Long, Integer> products, ArrayList<Human> members, Human familyHead){
-        super(id, products);
-        setMembers(members);
-        setFamilyHead(familyHead);
-    }
-    
-    public ArrayList<Human> getMembers() {
-        return members;
-    }
-    public void setMembers(ArrayList<Human> members) {
+    public DispatchBook(long id, String direccion, Person leader, Set<Person> members) {
+        this.id = id;
+        this.direccion = direccion;
+        this.leader = leader;
         this.members = members;
     }
-    public Human getFamilyHead() {
-        return familyHead;
-    }
-    public void setFamilyHead(Human familyHead) {
-        this.familyHead = familyHead;
-    }    
 
-    @Override
-    public String getType(){
-        return "LIBRETA";
-    }    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Person getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Person leader) {
+        if (!members.contains(leader)) {
+            throw new IllegalArgumentException("El jefe de núcleo debe estar inscrito en la libreta");
+        }
+        this.leader = leader;
+    }
+
+    public Set<Person> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Person> members) {
+        this.members = members;
+    }
 }

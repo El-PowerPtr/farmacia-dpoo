@@ -1,7 +1,6 @@
 package aplicacion.logica;
 
 import java.util.Arrays;
-import java.util.Optional;
 import java.time.LocalDate;
 
 public final class Validate {

@@ -1,34 +1,27 @@
 package aplicacion.logica.buy_perms;
 
-import aplicacion.logica.Validate;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import aplicacion.logica.Validate;
+import aplicacion.logica.products.ControlType;
+import aplicacion.logica.products.Product;
 
 public class Recipe extends BuyPerm {
-    private String patientName;
     private String doctorName;
-    private long patientsId;
     private long doctorsId;
-    private LocalDate date; 
+    private LocalDate creationDate;
+    private Map<Product, Integer> products;
 
-    public Recipe(long id, HashMap<Long, Integer> products,
-        String patientName, long patientsId, String doctorName, long doctorId, LocalDate date)
-    {   
-        super(id, products);
-        setPatientName(patientName);
-        setPatientsId(patientsId);
+    public Recipe(HashMap<Product, Integer> products,
+            String doctorName, long doctorId, LocalDate creationDate) {
+        setProducts(products);
         setDoctorName(doctorName);
-        setDoctorsId(doctorId);
-        setDate(date);
-    }
-
-    public String getPatientName() {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        Validate.isNotEmpty(patientName);
-        this.patientName = patientName;
+        setDoctorId(doctorId);
+        setCreationDate(creationDate);
     }
 
     public String getDoctorName() {
@@ -36,18 +29,40 @@ public class Recipe extends BuyPerm {
     }
 
     public void setDoctorName(String doctorName) {
-        Validate.isNotEmpty(doctorName);
+        if (!Validate.isHumanName(doctorName)) {
+            throw new IllegalArgumentException("Nombre inválido: " + doctorName);
+        }
         this.doctorName = doctorName;
     }
 
-    public long getPatientsId() {
-        return patientsId;
+    public long getDoctorId() {
+        return doctorsId;
     }
 
-    public void setPatientsId(long patientsId) {
-        Validate.isNotEmpty(patientsId);
-        Validate.isHumanId(patientsId);
-        this.patientsId = patientsId;
+    public void setDoctorId(long doctorsId) {
+        if (!Validate.isHumanId(doctorsId)) {
+            throw new IllegalArgumentException("Número de carnét de identidad inválido");
+        }
+        this.doctorsId = doctorsId;
+    }
+
+    private void setProducts(Map<Product, Integer> products) {
+        if (products.size() == 0) {
+            throw new IllegalArgumentException("El Tarjetón debe tener al menos un producto");
+        } else if (products.size() > 4) {
+            throw new IllegalArgumentException("El Tarjetón debe tener como máximo 4 productos");
+        }
+        List<Product> invalidProducts = products.keySet()
+                .stream()
+                .filter(x -> x.getControlType() == ControlType.CARD)
+                .collect(Collectors.toList());
+        if (!invalidProducts.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Hay uno(s) producto(s) que no se controlan por Tarjetón" + invalidProducts.stream()
+                            .map(Product::getCommonName)
+                            .collect(Collectors.toList()).toString());
+        }
+        this.products = products;
     }
 
     public long getDoctorsId() {
@@ -55,24 +70,21 @@ public class Recipe extends BuyPerm {
     }
 
     public void setDoctorsId(long doctorsId) {
-        Validate.isNotEmpty(doctorsId);
-        Validate.isHumanId(doctorsId);
         this.doctorsId = doctorsId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(LocalDate date) {
-        Validate.isNotEmpty(date);
-        Validate.isPast(date);
-        this.date = date;
+    public void setCreationDate(LocalDate creationDate) {
+        if (Validate.isFuture(creationDate)) {
+            throw new IllegalArgumentException("La fecha de creación no puede ser futura");
+        }
+        this.creationDate = creationDate;
     }
 
-
-    @Override
-    public String getType(){
-        return "RECETA";
+    public Map<Product, Integer> getProducts() {
+        return products;
     }
 }
