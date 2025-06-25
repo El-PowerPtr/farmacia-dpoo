@@ -3,16 +3,16 @@ package aplicacion.logica.products;
 import aplicacion.logica.Validate;
 
 public class Product {
-    private double price;
-    private String commonName;
-    private long id;
-    private ControlType[] controlTypes;
+    protected double price;
+    protected String commonName;
+    protected long id;
+    protected ControlType controlType;
 
-    public Product(double price, String commonName, long id, ControlType[] controlTypes) {
+    public Product(long id, String commonName, double price, ControlType controlType) {
         setPrice(price);
         setCommonName(commonName);
         setId(id);
-        setControlTypes(controlTypes);
+        setControlType(controlType);
     }
 
     public double getPrice() {
@@ -47,41 +47,16 @@ public class Product {
         this.id = id;
     }
 
-    public void setControlTypes(ControlType[] controlTypes) {
-        if (controlTypes == null) {
-            throw new IllegalArgumentException(
-                    "El tipo de control no puede ser nulo.(Odio java la puta madre cómo coño deja que las enums sean nulas)");
-        }
-        this.controlTypes = controlTypes;
+    public ControlType getControlType() {
+        return controlType;
     }
 
-    public ControlType[] getControlTypes() {
-        return controlTypes;
-    }
-
-    public boolean controledBy(ControlType controlType) {
-        for (int i = 0; i < controlTypes.length; i++) {
-            if (controlTypes[i] == controlType) {
-                return true;
-            }
-        }
-        return false;
+    public void setControlType(ControlType controlType) {
+        this.controlType = controlType;
     }
 
     @Override
     public int hashCode() {
         return ((Long) id).hashCode();
     }
-
-    @Override
-    public boolean equals(Object other)
-            throws IllegalArgumentException {
-        if (other instanceof Product) {
-            Product otherProduct = (Product) other;
-            return id == otherProduct.getId();
-        } else {
-            throw new IllegalArgumentException("Un producto sólo puede ser igual a otro Producto");
-        }
-    }
-
 }

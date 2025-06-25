@@ -11,14 +11,18 @@ classDiagram
     }
     
     class CarritoCompras{
-        - productos: Map~Producto, Int~
-        - setProducto(Producto, int)
+        - productos: Map~Producto, Integer~
         - permisos: Set~Permisos~
         - importe: float
+        - setProducto(Producto, int)
         + incorporarProducto(Producto) boolean
         + incorporarProducto(Producto, int) boolean
         + meterPermiso(Permiso permiso) boolean
-        + sacarProducto(Producto, int) Optional~Int~
+        + sacarProducto(Producto, int) Optional~Integer~
+    }
+
+    class Permiso {
+        <<abstract>>
     }
 
     class Sexo {
@@ -36,7 +40,7 @@ classDiagram
     }
 
     class Tarjeton{
-        - productos: Map~Producto, Int~
+        - productos: Map~Producto, Integer~
         - creationDate: LocalDate
         - expireDate: LocalDate
     }
@@ -72,6 +76,7 @@ classDiagram
         - nombreCientifico: String
         - fortalezaMg: int
         - temperaturaDeAlmacenamiento: int
+        + mismaMedicina(Medicamento otro) boolean
     }
 
     class ConstructorMedicamentos{
@@ -97,13 +102,13 @@ classDiagram
     }
 
     class Almacen {
-      - productos: Map <Producto, Int>
-      - lotes: Map<Long, Lote>
-      + incorporarLote(Lote) boolean
+      - productos: Map ~Producto, Integer~
+      - lotes: Map~Producto, Set~Lote~~
+      + incorporarLote(Lote lote) boolean
       + incorporarLote(Lote, int) boolean
       + incorporarProducto(Producto) boolean
       + incorporarProducto(Producto, int) boolean
-      + sacarProducto(Producto, int) Optional~Int~
+      + sacarProducto(Producto, int) Optional~Integer~
       + sacarLote(Lote): Optional~Lote~
       + crearProducto(long id, String nombre, float precio, Control control) Producto
       + crearMedicamento() boolean
@@ -151,7 +156,7 @@ classDiagram
         - idMedico: long
         - nombreMedico: String
         - fechaCreacion: LocalDate
-        - prodcuctos: Map~Producto, Int~
+        - prodcuctos: Map~Producto, Integer~
     }
 
     class ValidadorVentas {
@@ -174,7 +179,7 @@ classDiagram
     }
 
     class Farmacia {
-
+        + productosComprables() Map~Product, Integer~ 
     } 
 
     class Registro~T, C extends Collection~T~~ {
@@ -192,8 +197,8 @@ classDiagram
 
     class Lote{
         - id: long
-        - producto: Producto
         - cantidad: int
+        - producto: Producto
         - fechaProduccion: Optional~LocalDate~
         - fechaVencimiento: Optional~LocalDate~
     }
@@ -209,8 +214,13 @@ classDiagram
     Almacen "1" *-- "1" ConstructorMedicamentos
     Almacen "1" *-- "*" Producto 
     Almacen "1" *-- "*" Lote
+    Lote --> Producto
     Venta "1" o-- "1" CarritoCompras
     ControlDeVentas "1" *-- "*" Venta
+
+    Tarjeton --|> Permiso
+    Libreta --|> Permiso
+    Receta --|> Permiso
 
     RegistroLibretas ..|> Registro
     Almacen ..|> Registro
